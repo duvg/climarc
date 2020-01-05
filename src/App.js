@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
 import Error from './components/Error';
+import Clima from './components/Clima';
 
 function App() {
 
@@ -25,7 +26,9 @@ function App() {
     // fetch
     const respuesta = await fetch(url);
 
+
     const resultado = await respuesta.json();
+
 
     guardarResultado(resultado);
   }
@@ -52,9 +55,13 @@ function App() {
   if (error) {
     // mostrar componente de error
     componente = <Error mensaje="Los campos son obligatorios" />
+  } else if (resultado.cod === '404') {
+    componente = <Error mensaje="La ciudad no existen en nuestro registro" />
   } else {
     // mostrar los datos del clima
-    componente = null;
+    componente = <Clima 
+                  resultado={resultado}
+                />;
   }
 
   return (
